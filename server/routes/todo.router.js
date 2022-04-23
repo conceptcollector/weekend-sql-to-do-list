@@ -9,7 +9,7 @@ app.use(express.static('server/public'));
 
 app.use('/todo', toDoRouter);
 
-toDoRouter.get('/' , (req, res) => {
+toDoRouter.get('/', (req, res) => {
     console.log('GET /todo');
     let queryText = `
     SELECT * FROM "todo"
@@ -19,9 +19,25 @@ toDoRouter.get('/' , (req, res) => {
         res.send(dbResult.rows);
     })
     .catch((dbError) => {
-        console.log('error in GET /todo db request:', dbError);
+        console.log('GET /todo db request isn\'t working', dbError);
         res.sendStatus(500);
     })
 });
+
+toDoRouter.post('/', (req, res) => {
+    console.log('in /todo POST:', req.body);
+    const query = `
+        INSERT INTO "todo" ("name")
+            VALUES ($1,);
+    `;
+    const value = [req.body.name];
+    pool.query(query, value)
+    .then((results) => {
+        res.sendStatus( 201 );
+    }).catch( (dbError) => {
+        console.log('ERROR with INSERT:', dbError);
+        res.sendStatus(500);
+    })
+})
 
 module.exports = toDoRouter;
