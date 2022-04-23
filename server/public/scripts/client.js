@@ -2,7 +2,7 @@ $(document).ready(onReady);
 
 function onReady() {
     getTasks();
-    ('#submitButton').on('click', addTask);
+    $('#submitButton').on('click', addTask);
     $(document).on('click', '.completeButton', markComplete);
     $(document).on('click', '.deleteButton', deleteTask);
 }
