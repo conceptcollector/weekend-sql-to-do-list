@@ -43,11 +43,11 @@ toDoRouter.post('/', (req, res) => {
 toDoRouter.put('/:taskID', (req, res) => {
     let sqlQuery = `
     UPDATE "todo"
-      SET "pendingStatus"=$1
+      SET "completeStatus"=$1
       WHERE "id"=$2;
     `;
     let sqlValues = [
-      req.body.pendingStatus,
+      req.body.completeStatus,
       req.params.taskID
     ]
     pool.query(sqlQuery, sqlValues)
