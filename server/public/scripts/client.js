@@ -2,12 +2,13 @@ $(document).ready(onReady);
 
 function onReady() {
     getTasks();
+    ('#submitButton').on('click', addTask);
     $(document).on('click', '.completeButton', markComplete);
     $(document).on('click', '.deleteButton', deleteTask);
 }
 
 function getTasks() {
-    console.log( 'in getTasks' );
+    console.log('in getTasks');
     $('#task-table').empty();
     $.ajax({
         method: 'GET',
@@ -25,8 +26,24 @@ function getTasks() {
             `);
         }
     }).catch(function(error) {
-        console.log('GET isn\'t working', error);
+        console.log('getTasks isn\'t working', error);
     })    
+}
+
+function addTask() {
+    let task = {
+        name: $('#taskInput').val()
+    }
+    console.log('in addTask:', task);
+    $.ajax({
+        type: 'POST',
+        url: '/tasks',
+        data: task
+    }).then( function(response){
+        getItems();
+    }).catch( function(dbError){
+        alert('addTask isn\'t working', dbError);
+    })
 }
 
 function markComplete() {
@@ -41,7 +58,7 @@ function markComplete() {
   }).then(function(response) {
     getTasks();
   }).catch(function(error) {
-    console.log(error);
+    console.log('markComplete isn\'t working', error);
   })
 }
 
@@ -54,6 +71,6 @@ function deleteTask() {
     }).then( function(response){
         getItems();
     }).catch( function(dbError){
-        alert('Delete isn\'t working', dbError);
+        alert('deleteTask isn\'t working', dbError);
     })
 }
