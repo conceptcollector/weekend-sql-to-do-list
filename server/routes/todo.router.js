@@ -33,11 +33,31 @@ toDoRouter.post('/', (req, res) => {
     const value = [req.body.name];
     pool.query(query, value)
     .then((results) => {
-        res.sendStatus( 201 );
+        res.sendStatus(201);
     }).catch( (dbError) => {
-        console.log('ERROR with INSERT:', dbError);
+        console.log('POST /todo route isn\'t working', dbError);
         res.sendStatus(500);
     })
 })
+
+toDoRouter.put('/:taskID', (req, res) => {
+    let sqlQuery = `
+    UPDATE "todo"
+      SET "pendingStatus"=$1
+      WHERE "id"=$2;
+    `;
+    let sqlValues = [
+      req.body.pendingStatus,
+      req.params.taskID
+    ]
+    pool.query(sqlQuery, sqlValues)
+      .then((results) => {
+        res.sendStatus(200);
+      })
+      .catch((dbError) => {
+        console.log('PUT /todo route isn\'t working', dbError);
+        res.sendStatus(500);
+      })
+  })
 
 module.exports = toDoRouter;
