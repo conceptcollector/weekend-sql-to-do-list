@@ -2,7 +2,8 @@ $(document).ready(onReady);
 
 function onReady() {
     getTasks();
-    $(document).on('click', '.completeButton', markComplete)
+    $(document).on('click', '.completeButton', markComplete);
+    $(document).on('click', '.deleteButton', deleteTask);
 }
 
 function getTasks() {
@@ -42,4 +43,17 @@ function markComplete() {
   }).catch(function(error) {
     console.log(error);
   })
+}
+
+function deleteTask() {
+    const id = $(this).data('id');
+    console.log('in deleteTask:', id);
+    $.ajax({
+        type: 'DELETE',
+        url: `/tasks/${ id }`
+    }).then( function(response){
+        getItems();
+    }).catch( function(dbError){
+        alert('Delete isn\'t working', dbError);
+    })
 }
