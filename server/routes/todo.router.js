@@ -53,11 +53,30 @@ toDoRouter.put('/:taskID', (req, res) => {
     pool.query(sqlQuery, sqlValues)
       .then((results) => {
         res.sendStatus(200);
-      })
-      .catch((dbError) => {
+    })
+    .catch((dbError) => {
         console.log('PUT /todo route isn\'t working', dbError);
         res.sendStatus(500);
+    })
+})
+
+toDoRouter.delete('/:taskID', (req, res) => {
+    // We can access the value that was supplied
+    // to this route parameter by:
+    let taskToDelete = req.params.taskID;
+    let sqlQuery = `
+        DELETE FROM "todo"
+            WHERE "id"=$1;
+    `
+    let sqlValues = [taskToDelete];
+    pool.query(sqlQuery, sqlValues)
+      .then((dbResult) => {
+        res.sendStatus(200);
       })
-  })
+      .catch((dbError) => {
+        console.log('DELETE /todo route isn\'t working', dbError);
+        res.sendStatus(500);
+      })
+})
 
 module.exports = toDoRouter;
