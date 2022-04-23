@@ -12,11 +12,10 @@ function getTasks() {
     $('#task-table').empty();
     $.ajax({
         method: 'GET',
-        url: '/tasks'
+        url: '/todo'
     }).then(function(response) {
-        console.log("GET /tasks response", response);
+        console.log("GET /todo response", response);
         for (let task of response) {
-            console.log('tasks?', task);
             $('#task-table').append(`
                 <tr data-id=${task.id} data-rank=${task.pendingStatus}>
                 <td>${task.name}</td>
@@ -37,7 +36,7 @@ function addTask() {
     console.log('in addTask:', task);
     $.ajax({
         type: 'POST',
-        url: '/tasks',
+        url: '/todo',
         data: task
     }).then( function(response){
         getItems();
@@ -53,7 +52,7 @@ function markComplete() {
     console.log('taskIdToUpdate', taskIdToUpdate);
   $.ajax({
     method: 'PUT',
-    url: `/tasks/${taskIdToUpdate}`,
+    url: `/todo/${taskIdToUpdate}`,
     data: {pendingStatus: !pendingStatus}
   }).then(function(response) {
     getTasks();
@@ -67,7 +66,7 @@ function deleteTask() {
     console.log('in deleteTask:', id);
     $.ajax({
         type: 'DELETE',
-        url: `/tasks/${ id }`
+        url: `/todo/${ id }`
     }).then( function(response){
         getItems();
     }).catch( function(dbError){
