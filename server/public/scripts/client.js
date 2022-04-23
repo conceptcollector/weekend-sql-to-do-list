@@ -2,6 +2,7 @@ $(document).ready(onReady);
 
 function onReady() {
     getTasks();
+    $(document).on('click', '.completeButton', markComplete)
 }
 
 function getTasks() {
@@ -15,7 +16,7 @@ function getTasks() {
         for (let task of response) {
             console.log('tasks?', task);
             $('#task-table').append(`
-                <tr data-id=${task.id} data-rank=${koala.pendingStatus}>
+                <tr data-id=${task.id} data-rank=${task.pendingStatus}>
                 <td>${task.name}</td>
                 <td><button class="completeButton">Complete</button></td>
                 <td><button class="deleteButton">Delete</button></td>
@@ -27,3 +28,18 @@ function getTasks() {
     })    
 }
 
+function markComplete() {
+    console.log('Mark Complete button');
+    let taskIdToUpdate = $(this).closest('tr').data('id');
+    $(this).closest('tr').data('id').addClass('.complete');
+    console.log('taskIdToUpdate', taskIdToUpdate);
+  $.ajax({
+    method: 'PUT',
+    url: `/tasks/${taskIdToUpdate}`,
+    data: {pendingStatus: !pendingStatus}
+  }).then(function(response) {
+    getTasks();
+  }).catch(function(error) {
+    console.log(error);
+  })
+}
