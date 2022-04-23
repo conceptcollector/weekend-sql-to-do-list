@@ -17,7 +17,7 @@ function getTasks() {
         console.log("GET /todo response", response);
         for (let task of response) {
             $('#task-table').append(`
-                <tr data-id=${task.id} data-rank=${task.pendingStatus}>
+                <tr data-id=${task.id}>
                 <td>${task.name}</td>
                 <td><button class="completeButton">Complete</button></td>
                 <td><button class="deleteButton">Delete</button></td>
@@ -53,7 +53,7 @@ function markComplete() {
   $.ajax({
     method: 'PUT',
     url: `/todo/${taskIdToUpdate}`,
-    data: {pendingStatus: !pendingStatus}
+    data: {completeStatus: !completeStatus}
   }).then(function(response) {
     getTasks();
   }).catch(function(error) {
