@@ -2,33 +2,44 @@ $(document).ready(onReady);
 
 function onReady() {
     getTasks();
+    $(document).on('click', '.completeButton', markComplete)
 }
 
 function getTasks() {
     console.log( 'in getTasks' );
-    $('#viewKoalas').empty();
-        $.ajax({
-          method: 'GET',
-          url: '/koalas'
-        }).then(function(response) {
-          console.log("GET /songs response", response);
-          for (let koala of response) {
-            console.log('koalas?', koala);
-            $('#viewKoalas').append(`
-              <tr data-id=${koala.id} data-rank=${koala.readyToTransfer}>
-                     <td>${koala.name}</td>
-                     <td>${koala.gender}</td>
-                     <td>${koala.age}</td>
-                     <td>${koala.readyToTransfer}</td>
-                     <td>${koala.notes}</td>
-                     <td><button class="transferButton">Ready to Transfer</button></td>
-              </tr>
+    $('#task-table').empty();
+    $.ajax({
+        method: 'GET',
+        url: '/tasks'
+    }).then(function(response) {
+        console.log("GET /tasks response", response);
+        for (let task of response) {
+            console.log('tasks?', task);
+            $('#task-table').append(`
+                <tr data-id=${task.id} data-rank=${task.pendingStatus}>
+                <td>${task.name}</td>
+                <td><button class="completeButton">Complete</button></td>
+                <td><button class="deleteButton">Delete</button></td>
+                </tr>
             `);
-          }
-        }).catch(function(error) {
-          console.log('your GET is effed', error);
-        })
-      
-        
-  }
+        }
+    }).catch(function(error) {
+        console.log('GET isn\'t working', error);
+    })    
+}
+
+function markComplete() {
+    console.log('Mark Complete button');
+    let taskIdToUpdate = $(this).closest('tr').data('id');
+    $(this).closest('tr').data('id').addClass('.complete');
+    console.log('taskIdToUpdate', taskIdToUpdate);
+  $.ajax({
+    method: 'PUT',
+    url: `/tasks/${taskIdToUpdate}`,
+    data: {pendingStatus: !pendingStatus}
+  }).then(function(response) {
+    getTasks();
+  }).catch(function(error) {
+    console.log(error);
+  })
 }
