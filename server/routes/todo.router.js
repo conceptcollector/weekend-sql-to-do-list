@@ -1,14 +1,7 @@
 const express = require('express');
-const app = express();
-const bodyParser = require('body-parser');
-const PORT = 5000;
 const toDoRouter = express.Router();
+
 const pool = require('../modules/pool');
-
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static('server/public'));
-
-app.use('/todo', toDoRouter);
 
 toDoRouter.get('/', (req, res) => {
     console.log('GET /todo');
@@ -29,7 +22,7 @@ toDoRouter.post('/', (req, res) => {
     console.log('in /todo POST:', req.body);
     const query = `
         INSERT INTO "todo" ("name")
-            VALUES ($1,);
+            VALUES ($1);
     `;
     const value = [req.body.name];
     pool.query(query, value)

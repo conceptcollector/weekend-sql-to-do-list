@@ -1,3 +1,87 @@
+body {
+    background-color: #008080;
+    margin: 0;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #800080;
+    color: white;
+    margin: 0;
+    padding: 10px;
+}
+
+h1 {
+    text-align: center;
+}
+
+#wrapper {
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+}
+
+.one {
+    background-color: #808000;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    text-align: center;
+}
+
+table {
+    margin-top: 25px;
+    margin-left: auto;
+    margin-bottom: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+}
+
+th {
+    border: solid black 1px;
+    padding: 5px;
+}
+
+td {
+    border: solid black 1px;
+}
+
+.three {
+    background-color: #808000;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    text-align: center;
+}
+
+footer {
+    background-color: #800080;
+    color: white;
+    margin: 0;
+    padding: 10px;
+}
+
+.completeColumn {
+    text-align: center;
+}
+
+.deleteColumn {
+    text-align: center;
+}
+
 .complete {
-    color: blue;
+    text-decoration: line-through;
+}
+
+#submitButton, .completeButton {
+    background-color: green;
+    color: white;
+}
+
+.deleteButton {
+    background-color: red;
+    font-weight: bold;
 }
